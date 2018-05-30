@@ -152,7 +152,8 @@ public abstract class AbstractCalendarAccessor {
         ATTENDEES_EVENT_ID,
         ATTENDEES_NAME,
         ATTENDEES_EMAIL,
-        ATTENDEES_STATUS
+        ATTENDEES_STATUS,
+        AVAILABILITY
     }
 
     protected abstract EnumMap<KeyIndex, String> initContentProviderKeys();
@@ -328,7 +329,8 @@ public abstract class AbstractCalendarAccessor {
                 this.getKey(KeyIndex.EVENTS_START),
                 this.getKey(KeyIndex.EVENTS_END),
                 this.getKey(KeyIndex.EVENTS_RRULE),
-                this.getKey(KeyIndex.EVENTS_ALL_DAY)
+                this.getKey(KeyIndex.EVENTS_ALL_DAY),
+                this.getKey(KeyIndex.AVAILABILITY)
         };
         // Get all the ids at once from active calendars.
         StringBuffer select = new StringBuffer();
@@ -592,7 +594,7 @@ public abstract class AbstractCalendarAccessor {
                               String recurrence, int recurrenceInterval, String recurrenceWeekstart,
                               String recurrenceByDay, String recurrenceByMonthDay, Long recurrenceEndTime, Long recurrenceCount,
                               String allday,
-                              Integer calendarId, String url) {
+                              Integer calendarId, String url, Integer availability) {
         ContentResolver cr = this.cordova.getActivity().getContentResolver();
         ContentValues values = new ContentValues();
         final boolean allDayEvent = "true".equals(allday) && isAllDayEvent(new Date(startTime), new Date(endTime));
@@ -620,6 +622,7 @@ public abstract class AbstractCalendarAccessor {
         values.put(Events.HAS_ALARM, firstReminderMinutes > -1 || secondReminderMinutes > -1 ? 1 : 0);
         values.put(Events.CALENDAR_ID, calendarId);
         values.put(Events.EVENT_LOCATION, location);
+        values.put(Events.AVAILABILITY, availability);
 
         if (recurrence != null) {
             String rrule = "FREQ=" + recurrence.toUpperCase() +

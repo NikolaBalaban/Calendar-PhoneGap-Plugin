@@ -568,7 +568,8 @@ public class Calendar extends CordovaPlugin {
                     argOptionsObject.optLong("recurrenceCount", -1),
                     getPossibleNullString("allday", argOptionsObject),
                     argOptionsObject.optInt("calendarId", 1),
-                    getPossibleNullString("url", argOptionsObject));
+                    getPossibleNullString("url", argOptionsObject),
+                    1);
             if (createdEventID != null) {
               callback.success(createdEventID);
             } else {
@@ -663,6 +664,7 @@ public class Calendar extends CordovaPlugin {
                                 .put("dtend", cursor.getLong(cursor.getColumnIndex("end")))
                                 .put("eventLocation", cursor.getString(cursor.getColumnIndex("eventLocation")) != null ? cursor.getString(cursor.getColumnIndex("eventLocation")) : "")
                                 .put("allDay", cursor.getInt(cursor.getColumnIndex("allDay")))
+                                .put("availability", 1)
                 );
               } catch (JSONException e) {
                 e.printStackTrace();

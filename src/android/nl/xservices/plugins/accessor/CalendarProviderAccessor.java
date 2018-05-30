@@ -45,6 +45,7 @@ public class CalendarProviderAccessor extends AbstractCalendarAccessor {
     keys.put(KeyIndex.ATTENDEES_NAME, Attendees.ATTENDEE_NAME);
     keys.put(KeyIndex.ATTENDEES_EMAIL, Attendees.ATTENDEE_EMAIL);
     keys.put(KeyIndex.ATTENDEES_STATUS, Attendees.ATTENDEE_STATUS);
+    keys.put(KeyIndex.AVAILABILITY, Events.AVAILABILITY);
     return keys;
   }
 
@@ -99,10 +100,10 @@ public class CalendarProviderAccessor extends AbstractCalendarAccessor {
                             String description, String location, Long firstReminderMinutes, Long secondReminderMinutes,
                             String recurrence, int recurrenceInterval, String recurrenceWeekstart,
                             String recurrenceByDay, String recurrenceByMonthDay, Long recurrenceEndTime, Long recurrenceCount,
-                            String allday, Integer calendarId, String url) {
+                            String allday, Integer calendarId, String url, Integer availability) {
     eventsUri = eventsUri == null ? Uri.parse(CONTENT_PROVIDER + CONTENT_PROVIDER_PATH_EVENTS) : eventsUri;
     return super.createEvent(eventsUri, title, startTime, endTime, description, location,
             firstReminderMinutes, secondReminderMinutes, recurrence, recurrenceInterval, recurrenceWeekstart,
-            recurrenceByDay, recurrenceByMonthDay, recurrenceEndTime, recurrenceCount, allday, calendarId, url);
+            recurrenceByDay, recurrenceByMonthDay, recurrenceEndTime, recurrenceCount, allday, calendarId, url, availability);
   }
 }
