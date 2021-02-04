@@ -53,8 +53,12 @@
     EKEvent *myEvent = [EKEvent eventWithEventStore: self.eventStore];
     myEvent.title = title;
     myEvent.location = location;
-    myEvent.notes = notes;
-    myEvent.startDate = myStartDate;
+    if (location != (id)[NSNull null]) {
+      myEvent.location = location;
+    }
+    if (notes != (id)[NSNull null]) {
+      myEvent.notes = notes;
+    }
 
     int duration = _endInterval - _startInterval;
     int moduloDay = duration % (60 * 60 * 24);
@@ -685,8 +689,12 @@
   }
 
   myEvent.title = title;
-  myEvent.location = location;
-  myEvent.notes = notes;
+  if (location != (id)[NSNull null]) {
+      myEvent.location = location;
+  }
+  if (notes != (id)[NSNull null]) {
+      myEvent.notes = notes;
+  }
 
   [self.commandDelegate runInBackground: ^{
     EKCalendar* calendar = nil;
