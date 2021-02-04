@@ -52,13 +52,13 @@
 
     EKEvent *myEvent = [EKEvent eventWithEventStore: self.eventStore];
     myEvent.title = title;
-    myEvent.location = location;
     if (location != (id)[NSNull null]) {
       myEvent.location = location;
     }
     if (notes != (id)[NSNull null]) {
       myEvent.notes = notes;
     }
+    myEvent.startDate = myStartDate;
 
     int duration = _endInterval - _startInterval;
     int moduloDay = duration % (60 * 60 * 24);
@@ -250,7 +250,7 @@
       if (error) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.userInfo.description];
       } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:theEvent.eventWithIdentifier];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:theEvent.eventIdentifier];
       }
     } else {
       // Otherwise return a no result error (could be more than 1, but not a biggie)
@@ -385,7 +385,7 @@
     NSMutableDictionary *entry = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                   event.title, @"title",
                                   event.calendar.title, @"calendar",
-                                  event.eventWithIdentifier , @"id",
+                                  event.eventIdentifier , @"id",
                                   [df stringFromDate:event.startDate], @"startDate",
                                   [df stringFromDate:event.endDate], @"endDate",
                                   [df stringFromDate:event.lastModifiedDate], @"lastModifiedDate",
@@ -639,7 +639,7 @@
     if (error) {
       pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.userInfo.description];
     } else {
-      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:myEvent.eventWithIdentifier];
+      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:myEvent.eventIdentifier];
     }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
   }];
@@ -1012,7 +1012,7 @@
 
     case EKEventEditViewActionSaved:
       [controller.eventStore saveEvent:controller.event span:EKSpanThisEvent error:&error];
-      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:controller.event.eventWithIdentifier];
+      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:controller.event.eventIdentifier];
       break;
 
     case EKEventEditViewActionDeleted:
